@@ -12,7 +12,6 @@ using Contract;
 namespace Console.Benchmarks
 {
     // [Orderer(SummaryOrderPolicy.FastestToSlowest, MethodOrderPolicy.Declared)] // https://github.com/dotnet/BenchmarkDotNet/issues/1109
-    [InvocationCount(4)]
     [HtmlExporter]
     //[MemoryDiagnoser]
 #if BENCHMARKING_OUTSIDE
