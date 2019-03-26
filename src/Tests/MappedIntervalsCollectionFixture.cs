@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Contract;
 using NUnit.Framework;
@@ -39,17 +40,87 @@ namespace Tests
         public void OverwritingUpdate()
         {
             var input = IntervalGeneration.Sequence(0, 10, 5, 5, MakeDummy).ToArray();
-
-            var space = new MappedInterval<Crate>[1];
-            foreach (var i in input)
-            {
-                space[0] = i;
-                _sut.Put(space);
-            }
+            AddIntervals(input);
 
             var output = _sut.ToArray();
             var expectedOutput = IntervalGeneration.Sequence(0, 5, 5, input.Length - 1, i => input[i].Payload).Concat(input.Skip(input.Length - 1));
             CollectionAssert.AreEqual(expectedOutput, output);
+        }
+
+        [TestCaseSource(nameof(UpdateTestCases))]
+        public void Universal(string initial, string update, string expected)
+        {
+            _sut.Put(Parse(initial).ToArray());
+
+            _sut.Put(Parse(update).ToArray());
+
+            CollectionAssert.AreEqual(_sut, Parse(expected).ToArray());
+        }
+
+        private static IEnumerable<object[]> UpdateTestCases()
+        {
+            yield return new[]
+            {
+                "111  222  333",
+                "1     2     3",
+                "111  222  333",
+            };
+
+            yield return new[]
+            {
+                "111  222  333",
+                "3     1     2",
+                "311  212  332",
+            };
+
+            yield return new[]
+            {
+                "111     222     333",
+                "1111   22222   3333",
+                "1111   22222   3333",
+            };
+
+            yield return new[]
+            {
+                "111     222     333",
+                "3333   22222   3333",
+                "3333   11111   2222",
+            };
+
+            yield return new[]
+            {
+                "111    22222    333",
+                " 111    222    333 ",
+                "1111   22222   3333",
+            };
+
+            yield return new[]
+            {
+                "111    22222    333",
+                " 333    111    222 ",
+                "1333   21112   2223",
+            };
+
+            yield return new[]
+            {
+                "111    222    333    444",
+                "     2222222222222      ",
+                "111  2222222222222   444",
+            };
+
+            yield return new[]
+            {
+                "111    222    333    444",
+                "     22222222222        ",
+                "111  222222222223    444",
+            };
+
+            yield return new[]
+            {
+                "111    222    333    444",
+                "  222222222222222       ",
+                "11222222222222222    444",
+            };
         }
 
         [TestCase(0)]
@@ -106,6 +177,50 @@ namespace Tests
             CollectionAssert.AreEqual(part, later);
         }
 
+        private void AddIntervals(params MappedInterval<Crate>[] intervals)
+        {
+            _sut.Put(intervals);
+        }
+
+        private static IEnumerable<MappedInterval<Crate>> Parse(string description)
+        {
+            var now = 0L;
+            var i = 0;
+            long? start = null;
+
+            int? current = null;
+            while (i < description.Length)
+            {
+                var c = description[i];
+                if (!current.HasValue && c != ' ')
+                {
+                    Debug.Assert(!start.HasValue);
+                    current = c - '0';
+                    start = now;
+                }
+                else if (current.HasValue)
+                {
+                    Debug.Assert(start.HasValue);
+                    if ((c - '0') != current)
+                    {
+                        yield return new MappedInterval<Crate>(start.Value, now, MakeDummy(current.Value));
+                        current = null;
+                        start = null;
+                        continue;
+                    }
+                }
+
+                ++i;
+                now += 10;
+            }
+
+            if (current.HasValue)
+            {
+                Debug.Assert(start.HasValue);
+                yield return new MappedInterval<Crate>(start.Value, now, MakeDummy(current.Value));
+            }
+        }
+
         private static IEnumerable<MappedInterval<T>> CollectFrom<T>(IMappedIntervalsCollection<T> collection, long from)
         {
             using (var e = collection.GetEnumerator(from))
@@ -117,10 +232,14 @@ namespace Tests
             }
         }
 
+        private static MappedInterval<Crate> MakeInterval(long from, long to, int payload)
+        {
+            return new MappedInterval<Crate>(from, to, MakeDummy(payload));
+        }
+
         private static Crate MakeDummy(int value)
         {
             return new Crate(value);
         }
-
     }
 }
