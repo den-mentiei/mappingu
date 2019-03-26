@@ -4,26 +4,29 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using BenchmarkDotNet.Attributes;
+#if BENCHMARKING_OUTSIDE
 using BenchmarkDotNet.Diagnosers;
+#endif
 using Contract;
 
 namespace Console.Benchmarks
 {
     // [Orderer(SummaryOrderPolicy.FastestToSlowest, MethodOrderPolicy.Declared)] // https://github.com/dotnet/BenchmarkDotNet/issues/1109
+    [InvocationCount(4)]
     [HtmlExporter]
-    [MemoryDiagnoser]
+    //[MemoryDiagnoser]
 #if BENCHMARKING_OUTSIDE
-    [HardwareCounters(HardwareCounter.CacheMisses, HardwareCounter.BranchMispredictions, HardwareCounter.BranchInstructions)]
+    //[HardwareCounters(HardwareCounter.CacheMisses, HardwareCounter.BranchMispredictions, HardwareCounter.BranchInstructions)]
 #else
     [InProcess] // It is now run in-process only, as separate executable won't load plugins and fail.
 #endif
-    public class RealSinglePutScenarios<TPayload> : CollectionBenchmarkBase<TPayload>
+    public abstract class RealSinglePutScenariosBase<TPayload> : CollectionBenchmarkBase<TPayload>
         where TPayload : new()
     {
-        private MappedInterval<TPayload>[] _ascending;
-        private MappedInterval<TPayload>[] _descending;
-        private MappedInterval<TPayload>[] _shuffled;
-        private Tuple<int, int>[] _ranges;
+        protected MappedInterval<TPayload>[] _ascending;
+        protected MappedInterval<TPayload>[] _descending;
+        protected MappedInterval<TPayload>[] _shuffled;
+        protected Tuple<int, int>[] _ranges;
 
         [ParamsAllValues]
         public DataSource Source { get; set; }
@@ -53,54 +56,8 @@ namespace Console.Benchmarks
             Shuffle(ranges, _ranges);
         }
 
-        [Benchmark(Baseline = true)]
-        public void Ascending()
-        {
-            var whole = new Tuple<int, int>[1];
-            whole[0] = Tuple.Create(0, _ascending.Length);
-            AddSeries(_ascending, whole);
-        }
-
-        [Benchmark]
-        public void Descending()
-        {
-            var whole = new Tuple<int, int>[1];
-            whole[0] = Tuple.Create(0, _descending.Length);
-            AddSeries(_descending, whole);
-        }
-
-        [Benchmark]
-        public void Random()
-        {
-            var whole = new Tuple<int, int>[1];
-            whole[0] = Tuple.Create(0, _shuffled.Length);
-            AddSeries(_shuffled, whole);
-        }
-
-        [Benchmark]
-        public void RandomAscendingSeries()
-        {
-            AddSeries(_ascending, _ranges);
-        }
-
-        [Benchmark]
-        public void RandomDescendingSeries()
-        {
-            AddSeries(_descending, _ranges);
-        }
-
-        [Benchmark]
-        public void RandomBatchedSeries()
-        {
-            var collection = Collection;
-            foreach (var range in _ranges)
-            {
-                collection.Put(new ArraySegment<MappedInterval<TPayload>>(_ascending, range.Item1, range.Item2 - range.Item1));
-            }
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void AddSeries(IReadOnlyList<MappedInterval<TPayload>> input, IReadOnlyList<Tuple<int, int>> ranges)
+        protected void AddSeries(IReadOnlyList<MappedInterval<TPayload>> input, IReadOnlyList<Tuple<int, int>> ranges)
         {
             var collection = Collection;
             var box = new MappedInterval<TPayload>[1];
