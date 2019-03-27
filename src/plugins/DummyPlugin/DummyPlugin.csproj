@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DummyPluginFactory.cs" />
-    <Compile Include="MappedIntervalsCollection.cs" />
+    <Compile Include="SortedSetWithCreepyComparerCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Contract\Contract.csproj">

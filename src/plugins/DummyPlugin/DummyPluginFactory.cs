@@ -10,13 +10,13 @@ namespace DummyPlugin
         {
         }
 
-        public override string Name => nameof(DummyPlugin);
+        public override string Name => "SortedSetWithCreepyComparer";
 
         public override IStorageFactory Factory => this;
 
         public IMappedIntervalsCollection<T> Create<T>()
         {
-            return new MappedIntervalsCollection<T>();
+            return new SortedSetWithCreepyComparerCollection<T>();
         }
 
         public IMappedIntervalsCollection<T> Create<T>(IReadOnlyList<MappedInterval<T>> intervals)

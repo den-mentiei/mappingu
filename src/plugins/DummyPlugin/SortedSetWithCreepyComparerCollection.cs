@@ -5,11 +5,11 @@ using Contract;
 
 namespace DummyPlugin
 {
-    internal sealed class MappedIntervalsCollection<T> : IMappedIntervalsCollection<T>
+    internal sealed class SortedSetWithCreepyComparerCollection<T> : IMappedIntervalsCollection<T>
     {
         private readonly SortedSet<Hueta> _sortedSet;
 
-        public MappedIntervalsCollection()
+        public SortedSetWithCreepyComparerCollection()
         {
             _sortedSet = new SortedSet<Hueta>(new HuetaComparer());
         }
