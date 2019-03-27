@@ -38,7 +38,7 @@ namespace Tests
         [Test]
         public void CreationFromUnorderedDataThrows()
         {
-            var input = new[] { MakeInterval(0, 100, 1), MakeInterval(10, 20, 3), MakeInterval(10, 20, 4) };
+            var input = new[] { MakeInterval(0, 100, 1), MakeInterval(10, 20, 3), MakeInterval(5, 20, 4) };
 
             Assert.Throws<ArgumentException>(() => _factory.Create(input));
         }
@@ -291,7 +291,12 @@ namespace Tests
 
         private void AddIntervals(params MappedInterval<Crate>[] intervals)
         {
-            _sut.Put(intervals);
+            var box = new MappedInterval<Crate>[1];
+            foreach (var i in intervals)
+            {
+                box[0] = i;
+                _sut.Put(box);
+            }
         }
 
         private static IEnumerable<MappedInterval<Crate>> Parse(string description)

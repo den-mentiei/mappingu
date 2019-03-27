@@ -10,11 +10,11 @@ namespace Tests
     [TestFixtureSource(typeof(CollectionFactories), nameof(CollectionFactories.Factories))]
     internal sealed class MappedIntervalsCollectionRealLikeDataFixture
     {
-        private readonly Func<IMappedIntervalsCollection<Crate>> _factory;
+        private readonly IStorageFactory _factory;
 
         private IMappedIntervalsCollection<Crate> _sut;
 
-        public MappedIntervalsCollectionRealLikeDataFixture(Func<IMappedIntervalsCollection<Crate>> factory)
+        public MappedIntervalsCollectionRealLikeDataFixture(IStorageFactory factory)
         {
             _factory = factory;
         }
@@ -22,7 +22,7 @@ namespace Tests
         [SetUp]
         public void SetUp()
         {
-            _sut = _factory();
+            _sut = _factory.Create<Crate>();
         }
 
         [TestCase(DataSource.Glasses2, DataFilter.Raw)]
