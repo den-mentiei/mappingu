@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Contract;
@@ -42,8 +43,6 @@ namespace DummyPlugin
         public void Delete(long from, long to)
         {
             var ololol = _sortedSet.GetViewBetween(new Hueta(new MappedInterval<T>(from, from, default(T)), true), new Hueta(new MappedInterval<T>(to, to, default(T)), false));
-            var olololStart = 0;
-            var olololEnd = ololol.Count;
             if (ololol.Count > 0)
             {
                 var olololMin = ololol.Min;
@@ -54,16 +53,15 @@ namespace DummyPlugin
                 {
                     _sortedSet.Remove(olololMin);
                     toAdd.Add(new Hueta(new MappedInterval<T>(olololMin.Start, from, olololMin.Interval.Payload), null));
-                    olololStart++;
                 }
                 if (olololMax.End > to)
                 {
                     _sortedSet.Remove(olololMax);
                     toAdd.Add(new Hueta(new MappedInterval<T>(to, olololMax.End, olololMax.Interval.Payload), null));
-                    olololEnd--;
                 }
 
-                _sortedSet.ExceptWith(ololol.Skip(olololStart).Take(olololEnd - olololStart));
+                var toRemove = ololol.ToArray();
+                _sortedSet.ExceptWith(toRemove);
                 foreach (var hueta in toAdd)
                 {
                     _sortedSet.Add(hueta);
