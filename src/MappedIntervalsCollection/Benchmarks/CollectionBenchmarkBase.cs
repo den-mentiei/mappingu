@@ -24,7 +24,9 @@ namespace Console.Benchmarks
         public static IEnumerable<object> CreateCollections()
         {
 #if BENCHMARKING_OUTSIDE
-            return MefDlyaBednyx.GetPlugins(new ConsoleLogger()).Select(p => new CollectionDescription(p));
+            return MefDlyaBednyx
+                .GetPlugins(new ConsoleLogger())
+                .Select(p => new CollectionDescription(p));
 #else
             return CollectionBag.Collections;
 #endif

@@ -129,6 +129,10 @@
     <Compile Include="Benchmarks\CollectionFactories.cs" />
     <Compile Include="Benchmarks\Driver.cs" />
     <Compile Include="Benchmarks\PreDeleteState.cs" />
+    <Compile Include="Benchmarks\RealEnumerationAscendingScenario.cs" />
+    <Compile Include="Benchmarks\RealEnumerationDescendingScenario.cs" />
+    <Compile Include="Benchmarks\RealEnumerationRandomScenario.cs" />
+    <Compile Include="Benchmarks\RealEnumerationScenariosBase.cs" />
     <Compile Include="Benchmarks\RealSinglePutAscendingScenario.cs" />
     <Compile Include="Benchmarks\RealSinglePutDescendingScenario.cs" />
     <Compile Include="Benchmarks\RealSinglePutRandomAscendingSeriesScenario.cs" />
