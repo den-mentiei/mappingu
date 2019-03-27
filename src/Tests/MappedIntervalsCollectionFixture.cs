@@ -107,6 +107,17 @@ namespace Tests
             CollectionAssert.AreEqual(_sut, input);
         }
 
+        [Test]
+        public void RemoveReallyLong()
+        {
+            var input = new[] { MakeInterval(0, 10, 1), MakeInterval(10000000, 20000000, 2) };
+            _sut.Put(input);
+
+            _sut.Delete(long.MinValue, long.MaxValue);
+
+            Assert.That(_sut.Count, Is.Zero);
+        }
+
         [TestCaseSource(nameof(UpdateTestCases))]
         public void Universal(string tag, string initial, string update, string expected)
         {
