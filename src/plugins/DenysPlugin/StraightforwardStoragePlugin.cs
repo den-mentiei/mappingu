@@ -1,22 +1,22 @@
 ﻿using System.Collections.Generic;
 using Contract;
 
-namespace DummyPlugin
+namespace DenysPlugin
 {
-    public sealed class DummyPlugin : SandboxPlugin, IStorageFactory
+    public sealed class StraightforwardStoragePlugin : SandboxPlugin, IStorageFactory
     {
-        public DummyPlugin(ILogger logger)
+        public StraightforwardStoragePlugin(ILogger logger)
             : base(logger)
         {
         }
 
-        public override string Name => nameof(DummyPlugin);
+        public override string Name => nameof(StraightforwardStoragePlugin);
 
         public override IStorageFactory Factory => this;
 
         public IMappedIntervalsCollection<T> Create<T>()
         {
-            return new MappedIntervalsCollection<T>();
+            return new StraightforwardStorage<T>();
         }
 
         public IMappedIntervalsCollection<T> Create<T>(IReadOnlyList<MappedInterval<T>> intervals)

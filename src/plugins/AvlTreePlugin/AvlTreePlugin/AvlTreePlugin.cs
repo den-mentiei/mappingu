@@ -1,22 +1,22 @@
 ﻿using System.Collections.Generic;
 using Contract;
 
-namespace DummyPlugin
+namespace AvlTreePlugin
 {
-    public sealed class DummyPlugin : SandboxPlugin, IStorageFactory
+    internal sealed class AvlTreePlugin : SandboxPlugin, IStorageFactory
     {
-        public DummyPlugin(ILogger logger)
+        public AvlTreePlugin(ILogger logger)
             : base(logger)
         {
         }
 
-        public override string Name => nameof(DummyPlugin);
+        public override string Name => nameof(AvlTreePlugin);
 
         public override IStorageFactory Factory => this;
 
         public IMappedIntervalsCollection<T> Create<T>()
         {
-            return new MappedIntervalsCollection<T>();
+            return new MappedIntervalTree<T>(new MappedIntervalComparer<T>());
         }
 
         public IMappedIntervalsCollection<T> Create<T>(IReadOnlyList<MappedInterval<T>> intervals)

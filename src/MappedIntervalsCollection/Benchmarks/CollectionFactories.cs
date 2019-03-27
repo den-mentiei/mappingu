@@ -14,7 +14,7 @@ namespace Console.Benchmarks
 
         public IMappedIntervalsCollection<T> Create<T>()
         {
-            return _plugin.CreateCollection<T>();
+            return _plugin.Factory.Create<T>();
         }
 
         public override string ToString()

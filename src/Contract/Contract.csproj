@@ -43,6 +43,7 @@
     <Compile Include="ILogger.cs" />
     <Compile Include="IMappedIntervalsCollection.cs" />
     <Compile Include="ISandboxPlugin.cs" />
+    <Compile Include="IStorageFactory.cs" />
     <Compile Include="MappedInterval.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

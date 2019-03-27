@@ -28,7 +28,7 @@ namespace Tests
                 foreach (var p in _plugins)
                 {
                     _logger.Info(FormattableString.Invariant($"* Registered {p.Name} factory."));
-                    CollectionFactories.RegisterFactory(() => p.CreateCollection<Crate>());
+                    CollectionFactories.RegisterFactory(p.Factory);
                 }
                 _logger.Info("Running tests...");
                 var failures = new AutoRun().Execute(new string[0]);

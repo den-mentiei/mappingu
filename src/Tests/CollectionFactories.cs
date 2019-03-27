@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Contract;
 
 namespace Tests
 {
     internal static class CollectionFactories
     {
-        private static readonly List<Func<IMappedIntervalsCollection<Crate>>> Storage = new List<Func<IMappedIntervalsCollection<Crate>>>();
+        private static readonly List<IStorageFactory> Storage = new List<IStorageFactory>();
 
-        public static void RegisterFactory(Func<IMappedIntervalsCollection<Crate>> factory)
+        public static void RegisterFactory(IStorageFactory factory)
         {
             Storage.Add(factory);
         }
@@ -18,6 +17,6 @@ namespace Tests
             Storage.Clear();
         }
 
-        public static IEnumerable<Func<IMappedIntervalsCollection<Crate>>> Factories => Storage;
+        public static IEnumerable<IStorageFactory> Factories => Storage;
     }
 }
