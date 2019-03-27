@@ -10,11 +10,11 @@ namespace Tests
     [TestFixtureSource(typeof(CollectionFactories), nameof(CollectionFactories.Factories))]
     internal sealed class MappedIntervalsCollectionFixture
     {
-        private readonly Func<IMappedIntervalsCollection<Crate>> _factory;
+        private readonly IStorageFactory _factory;
 
         private IMappedIntervalsCollection<Crate> _sut;
 
-        public MappedIntervalsCollectionFixture(Func<IMappedIntervalsCollection<Crate>> factory)
+        public MappedIntervalsCollectionFixture(IStorageFactory factory)
         {
             _factory = factory;
         }
@@ -22,7 +22,33 @@ namespace Tests
         [SetUp]
         public void SetUp()
         {
-            _sut = _factory();
+            _sut = _factory.Create<Crate>();
+        }
+
+        [Test]
+        public void CreationFromData()
+        {
+            var input = IntervalGeneration.Sequence(0, 5, 5, 10, MakeDummy).ToArray();
+
+            var sut = _factory.Create(input);
+
+            CollectionAssert.AreEqual(sut, input);
+        }
+
+        [Test]
+        public void CreationFromUnorderedDataThrows()
+        {
+            var input = new[] { MakeInterval(0, 100, 1), MakeInterval(10, 20, 3), MakeInterval(10, 20, 4) };
+
+            Assert.Throws<ArgumentException>(() => _factory.Create(input));
+        }
+
+        [Test]
+        public void PutOfUnorderedDataOrderThrows()
+        {
+            var input = new[] { MakeInterval(0, 100, 1), MakeInterval(10, 20, 3), MakeInterval(10, 20, 4) };
+
+            Assert.Throws<ArgumentException>(() => _sut.Put(input));
         }
 
         [Test]
