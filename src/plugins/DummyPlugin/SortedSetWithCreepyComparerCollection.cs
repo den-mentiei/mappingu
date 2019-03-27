@@ -9,9 +9,11 @@ namespace DummyPlugin
     {
         private readonly SortedSet<Hueta> _sortedSet;
 
-        public SortedSetWithCreepyComparerCollection()
+        public SortedSetWithCreepyComparerCollection(IReadOnlyCollection<MappedInterval<T>> collection)
         {
-            _sortedSet = new SortedSet<Hueta>(new HuetaComparer());
+            ThrowIfNotOrdered(collection);
+
+            _sortedSet = new SortedSet<Hueta>(collection.Select(interval => new Hueta(interval, null)), new HuetaComparer());
         }
 
         public IEnumerator<MappedInterval<T>> GetEnumerator()
@@ -28,6 +30,8 @@ namespace DummyPlugin
 
         public void Put(IReadOnlyList<MappedInterval<T>> newIntervals)
         {
+            ThrowIfNotOrdered(newIntervals);
+
             foreach (var mappedInterval in newIntervals)
             {
                 Delete(mappedInterval.IntervalStart, mappedInterval.IntervalEnd);
@@ -70,6 +74,23 @@ namespace DummyPlugin
         public IEnumerator<MappedInterval<T>> GetEnumerator(long from)
         {
             return _sortedSet.GetViewBetween(new Hueta(new MappedInterval<T>(from, from, default(T)), true), new Hueta(_sortedSet.Max.Interval, false)).Select(hueta => hueta.Interval).GetEnumerator();
+        }
+
+        private static void ThrowIfNotOrdered(IReadOnlyCollection<MappedInterval<T>> intervals)
+        {
+            if (intervals.Count > 1)
+            {
+                var previous = intervals.First();
+                foreach (var current in intervals.Skip(1))
+                {
+                    if (current.IntervalStart < previous.IntervalEnd)
+                    {
+                        throw new ArgumentException();
+                    }
+
+                    previous = current;
+                }
+            }
         }
 
         private struct Hueta

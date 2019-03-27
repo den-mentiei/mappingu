@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Contract;
 
 namespace DummyPlugin
@@ -16,12 +18,12 @@ namespace DummyPlugin
 
         public IMappedIntervalsCollection<T> Create<T>()
         {
-            return new SortedSetWithCreepyComparerCollection<T>();
+            return Create(Array.Empty<MappedInterval<T>>());
         }
 
         public IMappedIntervalsCollection<T> Create<T>(IReadOnlyList<MappedInterval<T>> intervals)
         {
-            throw new System.NotImplementedException();
+            return new SortedSetWithCreepyComparerCollection<T>(intervals);
         }
     }
 }
