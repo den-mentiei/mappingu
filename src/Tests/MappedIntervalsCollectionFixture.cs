@@ -97,6 +97,16 @@ namespace Tests
             Assert.That(_sut.Count, Is.EqualTo(expectedOutput.Count()));
         }
 
+        [Test]
+        public void PutReallyLong()
+        {
+            var input = new[] {MakeInterval(0, long.MaxValue >> 1, 1), MakeInterval(long.MaxValue >> 1, long.MaxValue, 2)};
+
+            _sut.Put(input);
+
+            CollectionAssert.AreEqual(_sut, input);
+        }
+
         [TestCaseSource(nameof(UpdateTestCases))]
         public void Universal(string tag, string initial, string update, string expected)
         {
