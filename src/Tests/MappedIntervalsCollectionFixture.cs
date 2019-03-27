@@ -37,6 +37,19 @@ namespace Tests
         }
 
         [Test]
+        public void TouchingUpdate()
+        {
+            const int count = 5;
+            const int duration = 5;
+            const int step = 5;
+
+            var input = IntervalGeneration.Sequence(0, duration, step, count, MakeDummy).ToArray();
+            _sut.Put(input);
+
+            CollectionAssert.AreEqual(_sut, input);
+        }
+
+        [Test]
         public void OverwritingUpdate()
         {
             var input = IntervalGeneration.Sequence(0, 10, 5, 5, MakeDummy).ToArray();
@@ -48,7 +61,7 @@ namespace Tests
         }
 
         [TestCaseSource(nameof(UpdateTestCases))]
-        public void Universal(string initial, string update, string expected)
+        public void Universal(string tag, string initial, string update, string expected)
         {
             var initialIntervals = Parse(initial).ToArray();
             var addedIntervals = Parse(update).ToArray();
@@ -65,6 +78,7 @@ namespace Tests
         {
             yield return new[]
             {
+                "part-same-payload",
                 "111  222  333",
                 "1     2     3",
                 "111  222  333",
@@ -72,6 +86,7 @@ namespace Tests
 
             yield return new[]
             {
+                "part-other-payload",
                 "111  222  333",
                 "3     1     2",
                 "311  212  332",
@@ -79,6 +94,7 @@ namespace Tests
 
             yield return new[]
             {
+                "overlap-same-payload",
                 "111     222     333",
                 "1111   22222   3333",
                 "1111   22222   3333",
@@ -86,13 +102,15 @@ namespace Tests
 
             yield return new[]
             {
+                "overlap-other-payload",
                 "111     222     333",
-                "3333   22222   3333",
+                "3333   11111   2222",
                 "3333   11111   2222",
             };
 
             yield return new[]
             {
+                "overlapping-part-same-payload",
                 "111    22222    333",
                 " 111    222    333 ",
                 "1111   22222   3333",
@@ -100,6 +118,7 @@ namespace Tests
 
             yield return new[]
             {
+                "overlapping-part-other-payload",
                 "111    22222    333",
                 " 333    111    222 ",
                 "1333   21112   2223",
@@ -107,6 +126,7 @@ namespace Tests
 
             yield return new[]
             {
+                "overlap-multiple-same",
                 "111    222    333    444",
                 "     2222222222222      ",
                 "111  2222222222222   444",
@@ -114,6 +134,7 @@ namespace Tests
 
             yield return new[]
             {
+                "overlap-part-multiple",
                 "111    222    333    444",
                 "     22222222222        ",
                 "111  222222222223    444",
@@ -121,6 +142,7 @@ namespace Tests
 
             yield return new[]
             {
+                "overlap-part-multiple",
                 "111    222    333    444",
                 "  222222222222222       ",
                 "11222222222222222    444",
