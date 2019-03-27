@@ -182,6 +182,66 @@ namespace Tests
             Assert.That(output[1].IntervalEnd, Is.EqualTo(i.IntervalEnd));
         }
 
+        [TestCaseSource(nameof(RemovalTestCases))]
+        public void Removals(string tag, string initial, string target, string expected)
+        {
+            var initialIntervals = Parse(initial).ToArray();
+            var toBeRemoved = Parse(target).ToArray();
+            var expectedIntervals = Parse(expected).ToArray();
+
+            _sut.Put(initialIntervals);
+
+            foreach (var i in toBeRemoved)
+            {
+                _sut.Delete(i.IntervalStart, i.IntervalEnd);
+            }
+
+            CollectionAssert.AreEqual(_sut, expectedIntervals);
+        }
+
+        private static IEnumerable<object[]> RemovalTestCases()
+        {
+            yield return new[]
+            {
+                "nothing",
+                "  11111   22222   ",
+                "1       1        1",
+                "  11111   22222   ",
+            };
+
+            yield return new[]
+            {
+                "part",
+                "111   222   333",
+                "1      2      3",
+                " 11   2 2   33 ",
+            };
+
+            yield return new[]
+            {
+                "touching-overlapping-part",
+                "111   222   333",
+                "1111111        ",
+                "       22   333",
+            };
+
+            yield return new[]
+            {
+                "whole",
+                "111   222   333",
+                "    1111111    ",
+                "111         333",
+            };
+
+            yield return new[]
+            {
+                "overlapping-part",
+                "111   222   333",
+                "  11111        ",
+                "11     22   333",
+            };
+        }
+
         [TestCase(0, 0)]
         [TestCase(0, 1)]
         [TestCase(0, 5)]
