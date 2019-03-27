@@ -129,7 +129,40 @@ namespace Tests
 
             _sut.Put(addedIntervals);
 
-            CollectionAssert.AreEqual(_sut, expectedIntervals);
+            CollectionAssert.AreEqual(MergeIntervalsOfSamePayload(_sut), expectedIntervals);
+        }
+
+        private static IEnumerable<MappedInterval<Crate>> MergeIntervalsOfSamePayload(IEnumerable<MappedInterval<Crate>> intervals)
+        {
+            long currentIntervalStart = -1;
+            long currentIntervalEnd = -1;
+            Crate currentPayload = default(Crate);
+            foreach (var mappedInterval in intervals)
+            {
+                if (currentIntervalStart < 0)
+                {
+                    currentIntervalStart = mappedInterval.IntervalStart;
+                    currentIntervalEnd = mappedInterval.IntervalEnd;
+                    currentPayload = mappedInterval.Payload;
+                    continue;
+                }
+
+                if (mappedInterval.IntervalStart == currentIntervalEnd && mappedInterval.Payload == currentPayload)
+                {
+                    currentIntervalEnd = mappedInterval.IntervalEnd;
+                    continue;
+                }
+
+                yield return new MappedInterval<Crate>(currentIntervalStart, currentIntervalEnd, currentPayload);
+                currentIntervalStart = mappedInterval.IntervalStart;
+                currentIntervalEnd = mappedInterval.IntervalEnd;
+                currentPayload = mappedInterval.Payload;
+            }
+
+            if (currentIntervalStart != -1)
+            {
+                yield return new MappedInterval<Crate>(currentIntervalStart, currentIntervalEnd, currentPayload);
+            }
         }
 
         private static IEnumerable<object[]> UpdateTestCases()
