@@ -20,6 +20,7 @@ namespace Console
             benchmarks.Run();
 #endif
 
+            System.Console.WriteLine("Press any key to exit");
             System.Console.ReadKey();
         }
 

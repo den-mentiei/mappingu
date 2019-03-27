@@ -49,6 +49,8 @@ namespace Console.Benchmarks
                 BenchmarkRunner.Run<EnumerationAscending<ValueCrate<int>>>();
                 BenchmarkRunner.Run<EnumerationDescending<ValueCrate<int>>>();
                 BenchmarkRunner.Run<EnumerationRandom<ValueCrate<int>>>();
+
+                _logger.Info("Finished running benchmarks!");
             }
             finally
             {
