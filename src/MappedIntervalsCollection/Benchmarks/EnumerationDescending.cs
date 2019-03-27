@@ -2,7 +2,7 @@
 
 namespace Console.Benchmarks
 {
-    public class RealEnumerationDescendingScenario<TPayload> : RealEnumerationScenariosBase<TPayload>
+    public class EnumerationDescending<TPayload> : EnumerationWithRealData<TPayload>
         where TPayload : new()
     {
         [Benchmark]

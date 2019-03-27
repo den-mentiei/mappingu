@@ -4,7 +4,7 @@ using Contract;
 
 namespace Console.Benchmarks
 {
-    public class RealSinglePutRandomBatchedSeriesScenario<TPayload> : RealSinglePutScenariosBase<TPayload>
+    public class SinglePutRandomBatchedSeries<TPayload> : SinglePutWithRealData<TPayload>
         where TPayload : new()
     {
         [Benchmark]

@@ -3,7 +3,7 @@ using BenchmarkDotNet.Engines;
 
 namespace Console.Benchmarks
 {
-    public class RealCreationScenarios<TPayload> : RealSinglePutScenariosBase<TPayload>
+    public class CreationFromData<TPayload> : SinglePutWithRealData<TPayload>
         where TPayload : new()
     {
         private Consumer _consumer;

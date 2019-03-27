@@ -2,7 +2,7 @@
 
 namespace Console.Benchmarks
 {
-    public class RealSinglePutRandomDescendingSeriesScenario<TPayload> : RealSinglePutScenariosBase<TPayload>
+    public class SinglePutRandomDescendingSeries<TPayload> : SinglePutWithRealData<TPayload>
         where TPayload : new()
     {
         [Benchmark]

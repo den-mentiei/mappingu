@@ -3,7 +3,7 @@ using BenchmarkDotNet.Attributes;
 
 namespace Console.Benchmarks
 {
-    public class RealSinglePutRandomScenario<TPayload> : RealSinglePutScenariosBase<TPayload>
+    public class SinglePutRandom<TPayload> : SinglePutWithRealData<TPayload>
         where TPayload : new()
     {
         [Benchmark]

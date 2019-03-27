@@ -17,14 +17,14 @@ namespace Console.Benchmarks
 #else
     [InProcess] // It is now run in-process only, as separate executable won't load plugins and fail.
 #endif
-    public abstract class RealEnumerationScenariosBase<TPayload> : CollectionBenchmarkBase<TPayload>
+    public abstract class EnumerationWithRealData<TPayload> : CollectionBenchmarkBase<TPayload>
         where TPayload : new()
     {
+        protected Consumer _consumer;
+        protected MappedInterval<TPayload>[] _data;
         protected int[] _ascendingOffsets;
         protected int[] _descendingOffsets;
         protected int[] _randomOffsets;
-        private MappedInterval<TPayload>[] _data;
-        private Consumer _consumer;
 
         [ParamsAllValues]
         public DataSource Source { get; set; }

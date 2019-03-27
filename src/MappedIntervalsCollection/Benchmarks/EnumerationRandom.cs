@@ -2,13 +2,13 @@
 
 namespace Console.Benchmarks
 {
-    public class RealEnumerationAscendingScenario<TPayload> : RealEnumerationScenariosBase<TPayload>
+    public class EnumerationRandom<TPayload> : EnumerationWithRealData<TPayload>
         where TPayload : new()
     {
         [Benchmark]
         public void Work()
         {
-            Execute(_ascendingOffsets);
+            Execute(_randomOffsets);
         }
     }
 }

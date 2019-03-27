@@ -19,7 +19,7 @@ namespace Console.Benchmarks
 #else
     [InProcess] // It is now run in-process only, as separate executable won't load plugins and fail.
 #endif
-    public abstract class RealSinglePutScenariosBase<TPayload> : CollectionBenchmarkBase<TPayload>
+    public abstract class SinglePutWithRealData<TPayload> : CollectionBenchmarkBase<TPayload>
         where TPayload : new()
     {
         protected MappedInterval<TPayload>[] _ascending;

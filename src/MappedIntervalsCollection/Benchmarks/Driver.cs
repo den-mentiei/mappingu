@@ -36,18 +36,19 @@ namespace Console.Benchmarks
                 BenchmarkRunner.Run<SingleDeleteScenarios<ValueCrate<int>>>();
                 BenchmarkRunner.Run<DeleteScenarios<ValueCrate<int>>>();*/
 
-                BenchmarkRunner.Run<RealCreationScenarios<ValueCrate<int>>>();
+                BenchmarkRunner.Run<CreationFromData<ValueCrate<int>>>();
 
-                BenchmarkRunner.Run<RealSinglePutAscendingScenario<ValueCrate<int>>>();
-                BenchmarkRunner.Run<RealSinglePutDescendingScenario<ValueCrate<int>>>();
-                BenchmarkRunner.Run<RealSinglePutRandomScenario<ValueCrate<int>>>();
-                BenchmarkRunner.Run<RealSinglePutRandomAscendingSeriesScenario<ValueCrate<int>>>();
-                BenchmarkRunner.Run<RealSinglePutRandomDescendingSeriesScenario<ValueCrate<int>>>();
-                BenchmarkRunner.Run<RealSinglePutRandomBatchedSeriesScenario<ValueCrate<int>>>();
+                BenchmarkRunner.Run<SinglePutAscending<ValueCrate<int>>>();
+                BenchmarkRunner.Run<SinglePutDescending<ValueCrate<int>>>();
+                BenchmarkRunner.Run<SinglePutRandom<ValueCrate<int>>>();
+                BenchmarkRunner.Run<SinglePutRandomAscendingSeries<ValueCrate<int>>>();
+                BenchmarkRunner.Run<SinglePutRandomDescendingSeries<ValueCrate<int>>>();
+                BenchmarkRunner.Run<SinglePutRandomBatchedSeries<ValueCrate<int>>>();
 
-                BenchmarkRunner.Run<RealEnumerationAscendingScenario<ValueCrate<int>>>();
-                BenchmarkRunner.Run<RealEnumerationDescendingScenario<ValueCrate<int>>>();
-                BenchmarkRunner.Run<RealEnumerationRandomScenario<ValueCrate<int>>>();
+                BenchmarkRunner.Run<FullLinearEnumeration<ValueCrate<int>>>();
+                BenchmarkRunner.Run<EnumerationAscending<ValueCrate<int>>>();
+                BenchmarkRunner.Run<EnumerationDescending<ValueCrate<int>>>();
+                BenchmarkRunner.Run<EnumerationRandom<ValueCrate<int>>>();
             }
             finally
             {
