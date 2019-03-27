@@ -2,7 +2,7 @@
 
 namespace AvlTreePlugin
 {
-    internal sealed class AvlTreePluginFactory : SandboxPlugin
+    /*internal sealed class AvlTreePluginFactory : SandboxPlugin
     {
         public AvlTreePluginFactory(ILogger logger)
             : base(logger)
@@ -15,5 +15,5 @@ namespace AvlTreePlugin
         {
             return new MappedIntervalTree<T>(new MappedIntervalComparer<T>());
         }
-    }
+    }*/
 }
