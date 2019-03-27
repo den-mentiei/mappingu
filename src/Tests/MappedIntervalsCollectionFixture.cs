@@ -50,11 +50,15 @@ namespace Tests
         [TestCaseSource(nameof(UpdateTestCases))]
         public void Universal(string initial, string update, string expected)
         {
-            _sut.Put(Parse(initial).ToArray());
+            var initialIntervals = Parse(initial).ToArray();
+            var addedIntervals = Parse(update).ToArray();
+            var expectedIntervals = Parse(expected).ToArray();
 
-            _sut.Put(Parse(update).ToArray());
+            _sut.Put(initialIntervals);
 
-            CollectionAssert.AreEqual(_sut, Parse(expected).ToArray());
+            _sut.Put(addedIntervals);
+
+            CollectionAssert.AreEqual(_sut, expectedIntervals);
         }
 
         private static IEnumerable<object[]> UpdateTestCases()
