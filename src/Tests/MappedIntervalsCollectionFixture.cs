@@ -86,6 +86,17 @@ namespace Tests
             CollectionAssert.AreEqual(expectedOutput, output);
         }
 
+        [Test]
+        public void CountReflectsReality()
+        {
+            var input = IntervalGeneration.Sequence(0, 10, 5, 5, MakeDummy).ToArray();
+            AddIntervals(input);
+
+            var expectedOutput = IntervalGeneration.Sequence(0, 5, 5, input.Length - 1, i => input[i].Payload).Concat(input.Skip(input.Length - 1));
+            
+            Assert.That(_sut.Count, Is.EqualTo(expectedOutput.Count()));
+        }
+
         [TestCaseSource(nameof(UpdateTestCases))]
         public void Universal(string tag, string initial, string update, string expected)
         {
