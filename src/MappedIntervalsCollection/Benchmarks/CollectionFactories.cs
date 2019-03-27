@@ -17,6 +17,11 @@ namespace Console.Benchmarks
             return _plugin.Factory.Create<T>();
         }
 
+        public IMappedIntervalsCollection<T> Create<T>(IReadOnlyList<MappedInterval<T>> intervals)
+        {
+            return _plugin.Factory.Create(intervals);
+        }
+
         public override string ToString()
         {
             return _plugin.Name;

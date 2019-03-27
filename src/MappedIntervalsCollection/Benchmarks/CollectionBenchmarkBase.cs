@@ -14,6 +14,12 @@ namespace Console.Benchmarks
         [ParamsSource(nameof(CreateCollections))]
         public CollectionDescription Description { get; set; }
 
+        [GlobalSetup]
+        public void GlobalSetup()
+        {
+            AfterGlobalSetup();
+        }
+
         [IterationSetup]
         public void IterationSetup()
         {
@@ -33,6 +39,10 @@ namespace Console.Benchmarks
         }
 
         protected virtual void AfterCollectionCreation()
+        {
+        }
+
+        protected virtual void AfterGlobalSetup()
         {
         }
     }

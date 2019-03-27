@@ -11,7 +11,6 @@ using Contract;
 
 namespace Console.Benchmarks
 {
-
     //[Orderer(SummaryOrderPolicy.FastestToSlowest, MethodOrderPolicy.Declared)] // https://github.com/dotnet/BenchmarkDotNet/issues/1109
     [HtmlExporter]
     //[MemoryDiagnoser]
@@ -37,8 +36,7 @@ namespace Console.Benchmarks
         [Params(1000)]
         public int Count { get; set; }
 
-        [GlobalSetup]
-        public void Setup()
+        protected override void AfterGlobalSetup()
         {
             var dummy = new TPayload();
 
@@ -54,6 +52,8 @@ namespace Console.Benchmarks
             var ranges = GeneratePartitions(_ascending.Length).ToArray();
             _ranges = new Tuple<int, int>[ranges.Length];
             Shuffle(ranges, _ranges);
+
+            base.AfterGlobalSetup();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

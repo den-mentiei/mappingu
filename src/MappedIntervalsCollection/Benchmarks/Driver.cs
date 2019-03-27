@@ -32,9 +32,11 @@ namespace Console.Benchmarks
                 }
                 _logger.Info("Running benchmarks...");
 
-                BenchmarkRunner.Run<SinglePutScenarios<ValueCrate<int>>>();
+                /*BenchmarkRunner.Run<SinglePutScenarios<ValueCrate<int>>>();
                 BenchmarkRunner.Run<SingleDeleteScenarios<ValueCrate<int>>>();
-                BenchmarkRunner.Run<DeleteScenarios<ValueCrate<int>>>();
+                BenchmarkRunner.Run<DeleteScenarios<ValueCrate<int>>>();*/
+
+                BenchmarkRunner.Run<RealCreationScenarios<ValueCrate<int>>>();
 
                 BenchmarkRunner.Run<RealSinglePutAscendingScenario<ValueCrate<int>>>();
                 BenchmarkRunner.Run<RealSinglePutDescendingScenario<ValueCrate<int>>>();
